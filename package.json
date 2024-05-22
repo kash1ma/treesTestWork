@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "@hexlet/immutable-fs-trees": "^0.7.2"
+  },
+  "name": "20",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
