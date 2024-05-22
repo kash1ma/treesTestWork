@@ -83,3 +83,17 @@ function getDirectorysCount(tree) {
 }
 
 console.log(getDirectorysCount(tree));
+
+function countFilesInDirectory(tree) {
+  if (isDirectory(tree)) {
+    const children = getChildren(tree);
+    const descendantsCount = children.map(countFilesInDirectory);
+    return descendantsCount.reduce((a, b) => a + b, 0);
+  }
+  if (isFile(tree)) {
+    return 1;
+  }
+  return 0;
+}
+
+console.log(countFilesInDirectory(tree));
