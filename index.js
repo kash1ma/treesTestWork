@@ -1,4 +1,13 @@
-import { mkdir, mkfile } from "@hexlet/immutable-fs-trees";
+import {
+  mkdir,
+  mkfile,
+  getChildren,
+  getMeta,
+  isDirectory,
+  isFile,
+  map,
+} from "@hexlet/immutable-fs-trees";
+import _ from "lodash";
 
 function createFS() {
   const fileSystem = mkdir(
@@ -21,8 +30,10 @@ function createFS() {
   return fileSystem;
 }
 
+const tree = createFS();
+
 function traverseTree(root) {
-  if (!root || !root.children) return undefined;
+  if (!root || !root.children) return;
 
   console.log(root.name);
 
@@ -37,3 +48,38 @@ function traverseTree(root) {
 }
 
 console.log(traverseTree(createFS()));
+
+function changeOwner(tree, owner) {
+  if (!tree || !tree.children) return;
+
+  for (const item of tree.children) {
+    if (item.type === "directory") {
+      changeOwner(item, owner);
+    } else if (item.type === "file") {
+      item.owner = owner;
+    }
+  }
+
+  return tree;
+}
+console.log(changeOwner(createFS(), "hatori hanzo"));
+function getNodesCount(tree) {
+  if (isFile(tree)) {
+    return 1;
+  }
+  const children = getChildren(tree);
+  const descendantsCount = children.map(getNodesCount);
+  return 1 + descendantsCount.reduce((a, b) => a + b, 0);
+}
+console.log(getNodesCount(createFS()));
+
+function getDirectorysCount(tree) {
+  if (isDirectory(tree)) {
+    const children = getChildren(tree);
+    const descendantsCount = children.map(getDirectorysCount);
+    return 1 + descendantsCount.reduce((a, b) => a + b, 0);
+  }
+  return 0;
+}
+
+console.log(getDirectorysCount(tree));
